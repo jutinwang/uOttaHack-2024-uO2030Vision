@@ -1,8 +1,5 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/SignIn">Sign In</router-link>
-  </nav>
+  <h1>To Gather</h1>
   <router-view/>
 </template>
 
