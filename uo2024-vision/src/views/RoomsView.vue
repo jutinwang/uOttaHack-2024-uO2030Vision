@@ -10,6 +10,7 @@
 <script>
 import axios from 'axios'
 
+
 export default {
   name: 'RoomList',
   data() {
@@ -20,10 +21,10 @@ export default {
   methods: {
     getPosts(){
         axios.get('http://localhost:8000/getRooms', {
-    params: {
-        typeID: 1 // Replace paramKey and paramValue with your actual parameter key and value
-    }
-})
+          params: {
+              typeID: 1 // Replace paramKey and paramValue with your actual parameter key and value
+          }
+      })
             .then((response)=>{
                 console.log(response.data)
                 this.rooms=response.data
@@ -33,7 +34,7 @@ export default {
             }
         )
 
-    }
+    },
   }
 };
 </script>
