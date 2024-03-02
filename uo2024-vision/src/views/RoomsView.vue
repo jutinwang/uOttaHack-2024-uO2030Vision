@@ -10,6 +10,7 @@
 <script>
 import axios from 'axios';
 
+
 export default {
   name: 'RoomList',
   data() {
@@ -18,6 +19,7 @@ export default {
     };
   },
   methods: {
+
     getPosts() {
       axios.get('http://localhost:8000/getRooms', {
         params: {
