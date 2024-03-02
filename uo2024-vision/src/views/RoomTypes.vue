@@ -1,6 +1,6 @@
 <template id="butt">
   <header id="roomTypeHeader">  
-    <img alt="logo" src="../assets/logo.png" height="75">
+    <img alt="logo" src="../assets/hackathonLogo.png" height="75">
     <h1 id="togather">TOGATHER</h1>
     <button id="signOutBtn" @click="signOut">Sign Out</button>
   </header>
