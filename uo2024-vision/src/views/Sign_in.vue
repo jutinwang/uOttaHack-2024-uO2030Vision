@@ -36,6 +36,7 @@ export default {
       .then((userCredential) => {
       
       const user = userCredential.user;
+      
        // ...
       })
       .catch((error) => {
