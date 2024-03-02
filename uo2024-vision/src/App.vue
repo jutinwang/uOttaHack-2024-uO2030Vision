@@ -1,5 +1,12 @@
 <template>
-  <h1>To Gather</h1>
+  <nav>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
   <router-view/>
 </template>
 
@@ -15,13 +22,30 @@
 nav {
   padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  nav {
+  background-color: #333; /* Set background color */
+  color: #fff; /* Set text color */
+  padding: 10px 20px; /* Add padding */
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+ul {
+  list-style-type: none; /* Remove list bullets */
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline; /* Display list items horizontally */
+  margin-right: 20px; /* Add spacing between items */
+}
+
+a {
+  color: #fff; /* Set link color */
+  text-decoration: none; /* Remove underline */
+}
+
+a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
 }
 </style>
