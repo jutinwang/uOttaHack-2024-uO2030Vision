@@ -5,10 +5,10 @@
     <form @submit.prevent="authenticate">
       <label for="email">Email:</label>
       <input type="email" v-model="email" id="email" required>
-
+      <br>
       <label for="password">Password:</label>
       <input type="password" v-model="password" id="password" required>
-
+      <br>
       <button type="submit">Sign In</button>
     </form>
   </div>
@@ -17,6 +17,7 @@
 <script>
 import firebase from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import router from '../router/index.ts';
 
 export default {
   data() {
@@ -36,7 +37,7 @@ export default {
       .then((userCredential) => {
       
       const user = userCredential.user;
-       // ...
+      this.$router.push('/home')
       })
       .catch((error) => {
         const errorCode = error.code;
