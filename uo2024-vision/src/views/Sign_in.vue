@@ -1,7 +1,8 @@
 
 <template>
+  <body class="blue-tint-bg"></body>
   <div class="signin-container">
-    <h2>Sign In</h2>
+    <h2 id="phallus">SIGN IN</h2>
     <form @submit.prevent="authenticate" class="signin-form">
       <div class="form-group">
         <label for="email">Email:</label>
@@ -55,6 +56,16 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background-image: url('../assets/n.jpg');
+  background-size: cover;
+  background-color: #9EB8D9; /* Fallback color */
+  background-blend-mode: multiply; /* Apply tint */
+}
+
+h2#phallus{
+  font-weight: 200;
+  color: white;
+
 }
 
 .signin-form {
@@ -66,6 +77,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* New CSS rule for blue tint background */
 .form-group {
   margin-bottom: 15px;
 }
