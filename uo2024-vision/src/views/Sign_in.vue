@@ -37,7 +37,7 @@ export default {
       .then((userCredential) => {
       
       const user = userCredential.user;
-      this.$router.push('/home')
+      this.$router.push('/roomTypes')
       })
       .catch((error) => {
         const errorCode = error.code;
