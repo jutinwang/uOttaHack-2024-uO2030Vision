@@ -21,7 +21,7 @@ export default {
   methods: {
     getRooms() {
         const type = this.$route.params.id;
-      axios.get('http://localhost:2000/getRooms', {
+      axios.get('http://localhost:8000/getRooms', {
         params: {
           typeID: type
         }
