@@ -21,7 +21,7 @@ export default {
   methods: {
     getRooms() {
         const type = this.$route.params.id;
-      axios.get('http://localhost:8000/getRooms', {
+      axios.get('http://localhost:2000/getRooms', {
         params: {
           typeID: type
         }
@@ -59,8 +59,8 @@ h3 {
   margin: 0 10px;
   padding: 10px;
   border-radius: 20%;
-  background-color: aquamarine;
-  border: 2px solid cornflowerblue;
+  background-color: #9EB8D9;  
+  border: 2px solid #7C93C3;
   height: 170px;
   width: 170px;
   cursor: pointer; /* Add cursor pointer to indicate clickable */
