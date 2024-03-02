@@ -65,6 +65,7 @@ export default {
 h2#phallus{
   font-weight: 200;
   color: white;
+
 }
 
 .signin-form {
@@ -77,7 +78,6 @@ h2#phallus{
 }
 
 /* New CSS rule for blue tint background */
-
 .form-group {
   margin-bottom: 15px;
 }
