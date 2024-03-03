@@ -140,6 +140,10 @@ h3 {
     background-position: center;
     height: 200px;
     border-radius: 5%;
+    background-size:cover;
+    padding-top: 1.58% ;
+    border:none;
+
   }
 }  
 
@@ -150,9 +154,11 @@ h3 {
   background-position: center;
   
   h3{
+    padding-top: 2%;
     background-image: url('../assets/penguin.png');
     background-position: center;
-    border-radius: 10%;
+    border-radius: 30%;
+    background-size: cover;
   }
 }  
 .isFart{
