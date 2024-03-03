@@ -15,6 +15,7 @@
 
 <script>
 import axios from 'axios';
+import FormData from 'form-data'
 
 export default {
   name: 'RoomList',
@@ -31,9 +32,32 @@ export default {
             data: message
         })
         await axios.post('http://localhost:2000/ask-to-chat-gpt', {message: message})
-        .then((response) => {
-            this.messages.push(response.data)
-        }) 
+        .then( (response) => {
+            this. messages. push (response. data)
+        })
+  
+    },
+    
+    async sendFile(currentFile) {
+
+      var data = new FormData();
+      data.append("file", "/Users/justinwang/uOttaHack-2024-uO2030Vision/uo2024-vision/pdfs/" + currentFile.name)
+
+      var config = {
+          method: 'post',
+          maxBodyLength: Infinity, 
+          url: 'https://api.pdfrest.com/extracted-text', 
+          headers: { 
+              'Api-Key': '44c98650-893f-40a9-a4cd-fe7c90a62b8a', 
+              ...data.getHeaders()
+          },
+          data : data 
+      };
+
+      axios(config)
+      .then(function (response) {
+      console.log(JSON.stringify(response.data));
+      })
     }
   }
 };

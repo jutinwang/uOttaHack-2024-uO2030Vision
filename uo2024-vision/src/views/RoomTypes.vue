@@ -16,23 +16,38 @@
 </template>
 
 <script>
-import { getAuth, signOut } from "firebase/auth";
+import { useAuthState } from "@/main";
+import { getAuth, signOut} from "firebase/auth";
+import { useRouter } from "vue-router";
 
 export default {
   name: 'RoomTypeList',
+  setup(){
+    const {user}=useAuthState()
+    const auth =getAuth()
+    const user1=auth.currentUser
+    if (user1){
+      console.log(user1.email)
+    }else{
+      console.log("NO USER")
+    }
+    const router =useRouter()
+    console.log(user1)
+    return {user}
+  },
   data() {
     return {
       roomTypes: [
-        { id: 1, name: 'LIBRARY', style: { color: '#ffc09f', textAlign: 'center' } },
-        { id: 2, name: 'Exams', style: {color: '#a0ced9', textAlign: 'center'} },
-        { id: 3, name: 'Computer Science', style: {color: '#ffee93', textAlign: 'center'} },
-        { id: 4, name: 'Engineering', style: {color: '#fcf5c7', textAlign: 'center'}},
-        { id: 5, name: 'Biology', style: {color: '#adf7b6', textAlign: 'center'} },
-        { id: 6, name: 'History' },
-        { id: 7, name: 'English' },
-        { id: 8, name: 'Phsychology' },
-        { id: 9, name: 'Fine arts' },
-        { id: 10, name: 'Chemistry' }
+        { id: 1, name: 'LIBRARY', style: {color: '#ffc09f', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 2, name: 'Exams', style: {color: '#a0ced9', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 3, name: 'Computer Science', style: {color: '#ffee93', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 4, name: 'Engineering', style: {color: '#fcf5c7', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 5, name: 'Biology', style: {color: '#adf7b6', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 6, name: 'History', style: {color: '#F5B700', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 7, name: 'English',style: {color: '#90323D', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 8, name: 'Phsychology', style: {color: '#235789', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 9, name: 'Fine arts', style: {color: '#9448BC', textAlign: 'center',fontWeight: 'bold' } },
+        { id: 10, name: 'Chemistry', style: {color: '#FE5F55', textAlign: 'center',fontWeight: 'bold' } },
       ]
     };
   },
@@ -95,7 +110,7 @@ body#roomTypeBody {
   margin: 0;
   padding-top: 3%;
   height: 100vh;
-  background-color: #9fbee8;
+  background-color: #EADEDA;
   padding-left: 2%;
   padding-right: 2%;
 }
@@ -221,6 +236,102 @@ body#roomTypeBody {
   box-sizing: border-box; /* Ensure border width is included in width/height */
   border-radius: 4%;
 }
+
+.room-type-6 h3 {
+  position: relative;
+  background-image: url('../assets/history.jpg');
+  background-size: cover;
+  background-color: #9EB8D9; /* Fallback color */ 
+}
+
+.room-type-6 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #F5B700; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-7 h3 {
+  position: relative;
+  background-image: url('../assets/english.jpg');
+  background-size: cover;
+}
+
+.room-type-7 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #90323D; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-8 h3 {
+  position: relative;
+  background-image: url('../assets/psych.jpg');
+  background-size: cover;
+  background-color: #6390d9; /* Fallback color */
+}
+
+.room-type-8 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #235789; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-9 h3 {
+  position: relative;
+  background-image: url('../assets/art.jpg');
+  background-size: cover; /* Apply tint */
+  background-position: center;
+}
+
+.room-type-9 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #9448BC; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-10 h3 {
+  position: relative;
+  background-image: url('../assets/chem.jpg');
+  background-size: cover; /* Apply tint */
+  background-position: center;
+  background-color: #48d477; /* Fallback color */
+}
+
+.room-type-10 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #FE5F55; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
 
 
 
