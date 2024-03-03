@@ -4,6 +4,10 @@
 <template>
   <div class="classroom">
     <!-- Loop through rooms -->
+     <button class="librarian-button" @click="librarianOnClick">
+      <img src="librarian-icon.png" alt="Librarian Icon">
+    </button>
+
     <div v-for="roo in room" :key="roo.ID">
       <!-- Display profile icons -->
       <div class="attendees">
@@ -119,7 +123,7 @@ export default {
     getRooms() {
 
         const IDroom = this.$route.params.roomID;
-      axios.get('http://localhost:8000/getRoomDetails', {
+      axios.get('http://localhost:2000/getRoomDetails', {
         params: {
           roomID: IDroom
         }
@@ -171,7 +175,17 @@ export default {
       });
 
       this.newMessage = "";
-    }
+    },
+
+     
+    librarianOnClick() {
+       this.$router.push({ 
+        name: 'AITutor', 
+       
+      });
+    },
+    // Your other methods
+  
 
    
   },
@@ -183,6 +197,20 @@ export default {
 </script>
 
 <style scoped>
+
+librarian-button {
+  position: absolute;
+  top: 20px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.librarian-button img {
+  width: 40px; /* Adjust the width of the librarian icon */
+  height: auto; /* Maintain aspect ratio */
+}
 .classroom {
   background-image: url('https://static.vecteezy.com/system/resources/previews/000/568/517/original/vector-cartoon-illustration-of-school-classroom.jpg'); /* Set your classroom background image */
   background-size: cover;
