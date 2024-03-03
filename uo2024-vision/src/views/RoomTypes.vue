@@ -262,7 +262,7 @@ body#roomTypeBody {
 
 .room-type-6 h3 {
   position: relative;
-  background-image: url('../assets/history.jpg');
+  background-image: url('../assets/history1.jpg');
   background-size: cover;
   background-color: #9EB8D9; /* Fallback color */ 
 }
