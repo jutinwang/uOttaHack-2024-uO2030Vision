@@ -19,7 +19,7 @@
 
 <script>
 import firebase from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import router from '../router/index.ts';
 
 export default {
@@ -29,11 +29,13 @@ export default {
       password: ''
     };
   },
+  /*
   methods: {
     authenticate() {
       const email = this.email;
       const password = this.password;
-      const auth = getAuth();
+      const auth = getAuth()
+      
 
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -43,9 +45,25 @@ export default {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          const e= error.value; 
           
         });
     }
+  }*/
+  setup() {
+    const auth = getAuth()
+
+    const authenticate = async e => {
+      const{email, password} =e.target.elements
+      try {
+        await signInWithEmailAndPassword(auth, email.value, password.value)
+        router.push('/roomTypes')
+      }
+      catch (e){
+        alert(e.message)
+      }
+    }
+    return {authenticate}
   }
 };
 </script>
