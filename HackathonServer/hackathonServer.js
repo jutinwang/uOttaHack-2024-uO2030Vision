@@ -43,7 +43,7 @@ app.use(bodyParser.json())
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Hockey@2003",
+  password: "laker",
   database: "hackathon_project"
 });
 
@@ -121,7 +121,7 @@ app.get('/getRooms', (req, res) => {
 app.get('/getRoomDetails', (req, res) => {
   // Retrieve username and password from the request body
   const { roomID } = req.query;
-  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic, 'major', b.major)) AS attendents FROM room a LEFT JOIN roomAttendent at ON a.ID = at.roomID LEFT JOIN user b ON at.username = b.username WHERE a.ID = ? GROUP BY a.ID";
+  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM room a LEFT JOIN roomAttendent at ON a.ID = at.roomID LEFT JOIN user b ON at.username = b.username WHERE a.ID = ? GROUP BY a.ID";
 
   db.query(sql, [roomID], (err, results) => {
     if (err) {

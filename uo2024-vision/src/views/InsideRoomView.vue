@@ -138,7 +138,7 @@ export default {
     },
 
     async joinChat() {
-       const response = await axios.get(`http://localhost:8000/join?username=${this.username}`);
+       const response = await axios.get(`http://localhost:2000/join?username=${this.username}`);
     const data = response.data;
       this.username = "";
       this.hasJoinedChat = true;
