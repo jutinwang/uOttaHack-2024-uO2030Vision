@@ -29,7 +29,8 @@ export default {
       })
       .then((response) => {
         console.log(response.data);
-        this.rooms = response.data.rooms;
+        this.rooms = response.data.rooms
+        console.log(response.attendants);
       })
       .catch((error) => {
         console.log(error);

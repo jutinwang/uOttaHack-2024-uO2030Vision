@@ -43,10 +43,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "34.130.167.29",
   user: "root",
-  password: "Hockey@2003",
-  database: "hackathon_project"
+  database: "hackathon_schema"
 });
 
 db.connect((err) => {
@@ -102,7 +101,7 @@ app.get('/getRoomTypes', (req, res) => {
 app.get('/getRooms', (req, res) => {
   // Retrieve username and password from the request body
   const { typeID } = req.query;
-  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM room a LEFT JOIN roomAttendent at ON a.ID = at.roomID LEFT JOIN user b ON at.username = b.username WHERE a.typeID = ? GROUP BY a.ID";
+  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendants FROM Room a LEFT JOIN RoomAttendant at ON a.ID = at.roomID LEFT JOIN User b ON at.username = b.username WHERE a.typeID = ? GROUP BY a.ID";
 
   db.query(sql, [typeID], (err, results) => {
     if (err) {
@@ -113,11 +112,67 @@ app.get('/getRooms', (req, res) => {
       // Extract only the result rows
       const rooms = results.map(result => ({
         ID: result.ID,
-        attendents: result.attendents
+        attendents: result.attendants
       }));
       res.status(200).json({ rooms });
     }
   });
+});
+
+app.get('/leaveRoom', (req, res) => {
+  const email = req.query.email;
+  const room = req.query.room
+  console.log("Reached");
+
+  const attendantID = Math.floor(Math.random() * 1000000);
+
+
+  const sql = "delete from RoomAttendant where username = ?;";
+
+
+  db.query(sql, [email], (err, results) => {
+    if (err) {
+      console.log(err);
+      console.log("ERROR");
+      res.status(500).json({ error: 'Database error' });
+    } else {
+      // Extract only the result rows
+     
+      res.status(200).json( "success" );
+    }
+  });
+  
+ 
+
+  
+});
+
+app.get('/enterRoom', (req, res) => {
+  const email = req.query.email;
+  const room = req.query.room
+  console.log("Reached");
+
+  const attendantID = Math.floor(Math.random() * 1000000);
+
+
+  const sql = "insert into RoomAttendant (attendantID, username, roomID) VALUES (?, ?, ?);";
+
+
+  db.query(sql, [attendantID, email, room], (err, results) => {
+    if (err) {
+      console.log(err);
+      console.log("ERROR");
+      res.status(500).json({ error: 'Database error' });
+    } else {
+      // Extract only the result rows
+     
+      res.status(200).json( "success" );
+    }
+  });
+  
+ 
+
+  
 });
 
 
@@ -148,7 +203,7 @@ app.listen(2000, () => {
 app.get('/getRoomDetails', (req, res) => {
   // Retrieve username and password from the request body
   const { roomID } = req.query;
-  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM room a LEFT JOIN roomAttendent at ON a.ID = at.roomID LEFT JOIN user b ON at.username = b.username WHERE a.ID = ? GROUP BY a.ID";
+  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM Room a LEFT JOIN RoomAttendant at ON a.ID = at.roomID LEFT JOIN User b ON at.username = b.username WHERE a.ID = ? GROUP BY a.ID";
 
   db.query(sql, [roomID], (err, results) => {
     if (err) {
@@ -168,7 +223,5 @@ app.get('/getRoomDetails', (req, res) => {
 
 
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
 

@@ -7,6 +7,7 @@
      <button class="librarian-button" @click="librarianOnClick">
       <img src="librarian-icon.png" alt="Librarian Icon">
     </button>
+     <button @click="leaveRoom" class="uk-button uk-button-danger uk-margin-top">Leave Room</button>
 
     <div v-for="roo in room" :key="roo.ID">
       <!-- Display profile icons -->
@@ -72,6 +73,7 @@
                 </div>
               </div>
             </form>
+            
           </template>
 
           <template v-else>
@@ -101,6 +103,7 @@
 <script>
 import axios from 'axios';
 import { StreamChat } from "stream-chat";
+import { getAuth } from "firebase/auth";
 
 
 export default {
@@ -130,11 +133,52 @@ export default {
       })
       .then((response) => {
         console.log(response.data);
+        
+        const auth = getAuth();
+
+// Get the currently signed-in user
+const user = auth.currentUser;
         this.room = response.data.rooms;
+        axios.get('http://localhost:2000/enterRoom', {
+        params: {
+          email:user.email,
+          room: IDroom
+        }
+      }).then((response) => {
+        console.log(response);
+        })
+        
       })
       .catch((error) => {
         console.log(error);
       });
+    },
+
+    leaveRoom() {
+       const auth = getAuth();
+
+// Get the currently signed-in user
+const user = auth.currentUser;
+const IDroom = this.$route.params.roomID;
+
+axios.get('http://localhost:2000/leaveRoom', {
+        params: {
+          email:user.email,
+          room: IDroom
+        }
+      }).then((response) => {
+        console.log(response);
+        this.$router.push({ 
+        name: 'RoomTypes', 
+        
+      });
+        })
+        
+      
+      .catch((error) => {
+        console.log(error);
+      });
+      
     },
 
     async joinChat() {
