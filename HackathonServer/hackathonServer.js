@@ -6,7 +6,9 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { StreamChat } = require('stream-chat')
+const { StreamChat } = require('stream-chat');
+const ChatGptController = require('./chatGpt.controller')
+
 
 
 const crypto = require('crypto');
@@ -58,6 +60,8 @@ const serverSideClient = new StreamChat(
     'pjsqvb6ep6rvf5exgbzb2wbzjcfqqtedst92d3ch8rjnjewqgw7sedgx89e4j4h5'
   )
 
+
+  app.post('/ask-to-chat-gpt', ChatGptController.askToChatGpt)
 app.get('/join', async (req, res) => {
     const { username } = req.query
 
@@ -96,7 +100,7 @@ app.get('/getRoomTypes', (req, res) => {
 app.get('/getRooms', (req, res) => {
   // Retrieve username and password from the request body
   const { typeID } = req.query;
-  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM room a LEFT JOIN roomAttendant at ON a.ID = at.roomID LEFT JOIN user b ON at.username = b.username WHERE a.typeID = ? GROUP BY a.ID";
+  const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM room a LEFT JOIN roomAttendent at ON a.ID = at.roomID LEFT JOIN user b ON at.username = b.username WHERE a.typeID = ? GROUP BY a.ID";
 
   db.query(sql, [typeID], (err, results) => {
     if (err) {
