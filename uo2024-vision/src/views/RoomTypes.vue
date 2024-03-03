@@ -16,10 +16,25 @@
 </template>
 
 <script>
-import { getAuth, signOut } from "firebase/auth";
+import { useAuthState } from "@/main";
+import { getAuth, signOut} from "firebase/auth";
+import { useRouter } from "vue-router";
 
 export default {
   name: 'RoomTypeList',
+  setup(){
+    const {user}=useAuthState()
+    const auth =getAuth()
+    const user1=auth.currentUser
+    if (user1){
+      console.log(user1.email)
+    }else{
+      console.log("NO USER")
+    }
+    const router =useRouter()
+    console.log(user1)
+    return {user}
+  },
   data() {
     return {
       roomTypes: [

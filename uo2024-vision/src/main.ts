@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { computed, createApp, onMounted, onUnmounted, ref } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
@@ -8,7 +8,7 @@ import store from './store'
 
 import {initializeApp} from 'firebase/app'
 import firebase from 'firebase/app'
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { Unsubscribe, User, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const firebaseConfig ={
   apiKey: "AIzaSyA7KF8H0hVMTADN1zXS0aszunvdpAoSAHs",
@@ -21,28 +21,31 @@ const firebaseConfig ={
 }
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
 
 
-/*
-const email = "jsnel041@uottawa.ca"
-const password = "Snelly.8217"
+export const useAuthState = () =>{
+  const user = ref<User | null>(null);
+  const error = ref<Error | null>(null);
 
-signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    // ...
+  const auth =getAuth()
+  let unsubscribe: Unsubscribe
+  onMounted(()=>{
+    unsubscribe = onAuthStateChanged(
+      auth, 
+      u => (user.value= u), 
+      e => (error.value = e)
+    )
   })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
+  onUnmounted(() => unsubscribe())
+  
+  const isAuthenticated = computed(()=>user.value != null)
 
-signOut(auth).then(() => {
-  // Sign-out successful.
-}).catch((error) => {
-  // An error happened.
-});
-*/
+  return {user, error, isAuthenticated}
+}
+
+export const getUserState = () =>
+  new Promise((resolve, reject)=> 
+    onAuthStateChanged(getAuth(), resolve, reject)
+)
+
 createApp(App).use(store).use(router).mount('#app')
