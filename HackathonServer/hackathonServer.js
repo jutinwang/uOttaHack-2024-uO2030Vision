@@ -43,10 +43,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "34.130.167.29",
   user: "root",
-  password: "laker",
-  database: "hackathon_project"
+  database: "hackathon_schema"
 });
 
 db.connect((err) => {
@@ -116,6 +115,27 @@ app.get('/getRooms', (req, res) => {
         attendents: result.attendents
       }));
       res.status(200).json({ rooms });
+    }
+  });
+});
+app.get('/getAccount', (req, res) => {
+  // Retrieve username request body
+  const { username } = req.query;
+  const sql = "SELECT * FROM User WHere username=?;";
+  console.log('here')
+  db.query(sql, [username], (err, results) => {
+    if (err) {
+      console.log(err);
+      console.log("ERROR");
+      res.status(500).json({ error: 'Database error' });
+    } else {
+      const user = results.map(result => ({
+        username: result.username,
+        name: result.name, 
+        profile: result.profilePic
+      }));
+     
+      res.status(200).json({ results });
     }
   });
 });
