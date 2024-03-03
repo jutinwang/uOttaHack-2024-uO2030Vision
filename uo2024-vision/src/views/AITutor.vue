@@ -4,7 +4,12 @@
     <div class="input-container">
       <input v-model="currentMessage" type="text" class="input">
       <button @click="sendMessage(currentMessage)" class="button">Ask</button>
+      <!-- New input box -->
+      <input v-model="pdfUrl" type="text" placeholder="Enter PDF URL" class="input">
+      <!-- New button to retrieve data -->
+      <button @click="retrieveData(pdfUrl)" class="button">Retrieve Data</button>
     </div>
+    <!-- Removed extra </div> tag here -->
     <div class="messageBox">
       <template v-for="message in messages" :key="message.id">
         <div :class="{'messageFromUser': message.from === 'user', 'messageFromChatGpt': message.from !== 'user'}" v-html="message.data"></div>
@@ -15,52 +20,46 @@
 
 <script>
 import axios from 'axios';
-import FormData from 'form-data'
 
 export default {
   name: 'RoomList',
   data() {
     return {
       currentMessage: '',
-      messages: []
+      messages: [],
+      pdfUrl: '' // Added pdfUrl to the data object
     };
   },
   methods: {
     async sendMessage(message){
-        this.messages.push({
-            from: 'user',
-            data: message
-        })
-        await axios.post('http://localhost:2000/ask-to-chat-gpt', {message: message})
-        .then( (response) => {
-            this. messages. push (response. data)
-        })
-  
+      const userID = "owenhalvie2";
+      this.messages.push({
+        from: 'user',
+        data: message
+      });
+      await axios.post('http://localhost:2000/ask-to-chat-gpt', { userID: userID, message: message })
+        .then((response) => {
+          this.messages.push(response.data);
+        }); 
     },
-    
-    async sendFile(currentFile) {
-
-      var data = new FormData();
-      data.append("file", "/Users/justinwang/uOttaHack-2024-uO2030Vision/uo2024-vision/pdfs/" + currentFile.name)
-
-      var config = {
-          method: 'post',
-          maxBodyLength: Infinity, 
-          url: 'https://api.pdfrest.com/extracted-text', 
-          headers: { 
-              'Api-Key': '44c98650-893f-40a9-a4cd-fe7c90a62b8a', 
-              ...data.getHeaders()
-          },
-          data : data 
-      };
-
-      axios(config)
-      .then(function (response) {
-      console.log(JSON.stringify(response.data));
-      })
+    async retrieveData(pdfUrl) {
+      try {
+        const response = await axios.get('http://localhost:2000/extract-pdf', {
+          params: { pdfUrl: pdfUrl }
+        });
+        console.log('Extracted text:', response.data);
+        const userID = "owenhalvie2";
+        await axios.post('http://localhost:2000/ask-to-chat-gpt', { userID: userID, message: response.data })
+          .then((response) => {
+            this.messages.push(response.data);
+          });
+      } catch (error) {
+        console.error('Error retrieving data:', error);
+      }
     }
   }
 };
+
 </script>
 
 <style scoped>
