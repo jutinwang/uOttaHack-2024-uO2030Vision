@@ -3,7 +3,7 @@
     <button class="librarian-button" @click="librarianOnClick">
       <img src="../assets/robot.png" alt="Librarian Icon">
     </button>
-     <button @click="leaveRoom" class="uk-button uk-button-danger uk-margin-top">Leave Room</button>
+    <button @click="leaveRoom" class="uk-button uk-button-danger uk-margin-top">Leave Room</button>
 
     <div class="attendees">
       <div v-for="room in rooms" :key="room.ID">
@@ -19,14 +19,12 @@
         <h2>
           <div v-for="(message, index) in messages" :key="message.id">
             <template v-if="index === messages.length-1">
+              <div v-if="displaySpeechBubble && messages.length > 0" class="speech-bubble">
+                {{ message.text }}  
+              </div>
             </template>
           </div>
         </h2>
-        <div v-if="displaySpeechBubble && messages.length > 0">
-          <div class="speech-bubble">
-            {{ messages[messages.length-1].text }}  
-          </div>
-        </div>
       </div>
     </div>
 
@@ -39,52 +37,40 @@
                 <div class="uk-panel uk-panel-scrollable">
                   <ul class="uk-list uk-list-divider">
                     <li v-for="message in messages" :key="message.id">
-                      <div
-                        :class="{ 'uk-text-right': message.user.id === user.username }"
-                      >
+                      <div :class="{ 'uk-text-right': message.user.id === user.username }">
                         {{ message.user.id }}: {{ message.text }}
                       </div>
                     </li>
                   </ul>
                 </div>
-
-              </div>
-            </form>
-            
-          </template>
-
-                <form @submit.prevent="sendMessage" method="post">
-                  <div class="uk-flex uk-margin-small-top">
-                    <div class="uk-width-expand">
-                      <input
-                        class="uk-input"
-                        type="text"
-                        v-model="newMessage"
-                        placeholder="Start chatting..."
-                      >
-                    </div>
-                    <div class="uk-width-auto">
-                      <button class="uk-button uk-button-primary">Send</button>
-                    </div>
-                  </div>
-                </form>
               </template>
 
               <template v-else>
                 <div id="containment">
-                <form @submit.prevent="joinChat" method="post" class="uk-form-stacked">
-                  <div class="uk-margin-small-top uk-width-1-1@s">
-                    <label class="uk-form-label">Enter Your Username</label>
-                    <div class="uk-form-controls">
-                      <input class="uk-input" type="text" v-model="username" required>
+                  <form @submit.prevent="joinChat" method="post" class="uk-form-stacked">
+                    <div class="uk-margin-small-top uk-width-1-1@s">
+                      <label class="uk-form-label">Enter Your Username</label>
+                      <div class="uk-form-controls">
+                        <input class="uk-input" type="text" v-model="username" required>
+                      </div>
                     </div>
-                  </div>
-                  <div class="uk-margin-top uk-width-1-1@s">
-                    <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-uppercase">Join Chat</button>
-                  </div>
-                </form>
-              </div>
+                    <div class="uk-margin-top uk-width-1-1@s">
+                      <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-uppercase">Join Chat</button>
+                    </div>
+                  </form>
+                </div>
               </template>
+
+              <form @submit.prevent="sendMessage" method="post" v-if="hasJoinedChat">
+                <div class="uk-flex uk-margin-small-top">
+                  <div class="uk-width-expand">
+                    <input class="uk-input" type="text" v-model="newMessage" placeholder="Start chatting...">
+                  </div>
+                  <div class="uk-width-auto">
+                    <button class="uk-button uk-button-primary">Send</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -115,63 +101,38 @@ export default {
     };
   },
   methods: {
-
-    getRooms() {
-
-        const IDroom = this.$route.params.roomID;
-      axios.get('http://localhost:2000/getRoomDetails', {
-        params: {
-          roomID: IDroom
-        }
-      })
-      .then((response) => {
+    async getRooms() {
+      const IDroom = this.$route.params.roomID;
+      try {
+        const response = await axios.get('http://localhost:2000/getRoomDetails', {
+          params: { roomID: IDroom }
+        });
         console.log(response.data);
-        
         const auth = getAuth();
-
-// Get the currently signed-in user
-const user = auth.currentUser;
+        const user = auth.currentUser;
         this.room = response.data.rooms;
-        axios.get('http://localhost:2000/enterRoom', {
-        params: {
-          email:user.email,
-          room: IDroom
-        }
-      }).then((response) => {
-        console.log(response);
-        })
-        
-      })
-      .catch((error) => {
+        const response2 = await axios.get('http://localhost:2000/enterRoom', {
+          params: { email: user.email, room: IDroom }
+        });
+        console.log(response2);
+      } catch (error) {
         console.log(error);
-      });
+      }
     },
 
-    leaveRoom() {
-       const auth = getAuth();
-
-// Get the currently signed-in user
-const user = auth.currentUser;
-const IDroom = this.$route.params.roomID;
-
-axios.get('http://localhost:2000/leaveRoom', {
-        params: {
-          email:user.email,
-          room: IDroom
-        }
-      }).then((response) => {
+    async leaveRoom() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const IDroom = this.$route.params.roomID;
+      try {
+        const response = await axios.get('http://localhost:2000/leaveRoom', {
+          params: { email: user.email, room: IDroom }
+        });
         console.log(response);
-        this.$router.push({ 
-        name: 'RoomTypes', 
-        
-      });
-        })
-        
-      
-      .catch((error) => {
+        this.$router.push({ name: 'RoomTypes' });
+      } catch (error) {
         console.log(error);
-      });
-      
+      }
     },
 
     async joinChat() {
@@ -264,22 +225,21 @@ axios.get('http://localhost:2000/leaveRoom', {
   cursor: pointer;
 }
 
-
 .speech-bubble {
   position: absolute;
   background-color: #ffffff;
   border: 1px solid #ccc;
-  padding: 20px; /* Increased padding for larger size */
-  border-radius: 20px; /* Increased border radius for smoother corners */
+  padding: 20px;
+  border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  width: 300px; /* Set a fixed width */
-  text-align: center; /* Center the text horizontally */
-  left: 50%; /* Center the speech bubble horizontally */ 
-  top: 40%;/* Center the speech bubble vertically */
-  transform: translate(-50%, -30%); /* Move the speech bubble to the center */
-  overflow: hidden; /* Prevent overflow */
-  text-overflow: ellipsis; /* Display ellipsis (...) when text overflows */
+  width: 300px;
+  text-align: center;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -30%);
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -288,7 +248,7 @@ axios.get('http://localhost:2000/leaveRoom', {
   width: 100%;
 }
 
-div#containment{
+div#containment {
   background-color: #f5f5f5;
   border-radius: 3%;
   padding: 5%;
