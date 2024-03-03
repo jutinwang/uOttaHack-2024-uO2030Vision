@@ -7,8 +7,8 @@
   <body id="roomTypeBody">
     <div class="roomTypes">
       <ul class="roomGrid">
-        <li v-for="(room) in roomTypes" :key="room.id" @click="redirectToRoomPage(room.id)">
-          <h3>{{ room.id }} - {{ room.name }}</h3>
+        <li v-for="(room) in roomTypes" :key="room.id" @click="redirectToRoomPage(room.id)" :class="['room-type-' + room.id]">
+          <h3 :style="room.style">{{ room.name }}</h3>
         </li>
       </ul>
     </div>
@@ -38,16 +38,16 @@ export default {
   data() {
     return {
       roomTypes: [
-        { id: 1, name: 'Library' },
+        { id: 1, name: 'LIBRARY', style: { color: '#ffc09f', textAlign: 'center' } },
         { id: 2, name: 'Exams' },
-        { id: 3, name: 'Conference Room' },
-        { id: 4, name: 'Study Room' },
-        { id: 5, name: 'Meeting Room' },
-        { id: 6, name: 'Game Room' },
-        { id: 7, name: 'Lounge' },
-        { id: 8, name: 'Auditorium' },
-        { id: 9, name: 'Training Room' },
-        { id: 10, name: 'Break Room' }
+        { id: 3, name: 'Computer Science', style: {color: '#ffee93', textAlign: 'center'} },
+        { id: 4, name: 'Engineering' },
+        { id: 5, name: 'Biology' },
+        { id: 6, name: 'History' },
+        { id: 7, name: 'English' },
+        { id: 8, name: 'Phsychology' },
+        { id: 9, name: 'Fine arts' },
+        { id: 10, name: 'Chemistry' }
       ]
     };
   },
@@ -74,6 +74,7 @@ export default {
 </script>
 
 <style>
+/* General styles */
 h1#togather {
   color: #6c0e23;
   text-shadow: -1px -1px 0 #7C93C3, 1px -1px 0 #7C93C3, -1px 1px 0 #7C93C3, 1px 1px 0 #7C93C3; /* Outline using shadows */
@@ -137,4 +138,45 @@ body#roomTypeBody {
   border-radius: 10px;
 }
 
+/* Individual room type styles */
+.room-type-1 h3 {
+  position: relative;
+  background-image: url('../assets/1722.jpg');
+  background-size: cover;
+  background-color: #9EB8D9; /* Fallback color */
+  background-blend-mode: multiply;
+}
+
+.room-type-1 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #ffc09f; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-3 h3 {
+  position: relative;
+  background-image: url('../assets/code.jpg');
+  background-size: cover;
+}
+
+.room-type-3 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #ffee93; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+
+/* Define styles for other room types similarly */
 </style>
