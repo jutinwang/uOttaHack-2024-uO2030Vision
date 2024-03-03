@@ -1,114 +1,102 @@
-
-
-
 <template>
   <div class="classroom">
-    <!-- Loop through rooms -->
-     <button class="librarian-button" @click="librarianOnClick">
-      <img src="librarian-icon.png" alt="Librarian Icon">
+    <button class="librarian-button" @click="librarianOnClick">
+      <img src="../assets/robot.png" alt="Librarian Icon">
     </button>
 
-    <div v-for="roo in room" :key="roo.ID">
-      <!-- Display profile icons -->
-      <div class="attendees">
+    <div class="attendees">
+      <div v-for="room in rooms" :key="room.ID">
         <img
-          v-for="attendee in roo.attendents"
+          v-for="attendee in room.attendents"
           :key="attendee.id"
           :src="attendee.profilePic"
           class="profile-icon"
           :style="{ position: 'relative' }"
-
           @click="displaySpeechBubble = true"
           alt="Attendee"
         />
-        <h2> <div v-for="(message, index) in messages" :key="message.id">
-  <template v-if="index === 12">
-    <!-- Render the message at index 12 here -->
-    {{ message.text }}
-  </template>
-</div> </h2>
-        <!-- Speech bubble -->
-        <div
-          v-if="displaySpeechBubble"
-          class="speech-bubble"
-          :style="{ top: '-50px', left: '30px' }" 
-        >
-          <!-- Message content -->
-          {{ newMessage }}
+        <h2>
+          <div v-for="(message, index) in messages" :key="message.id">
+            <template v-if="index === messages.length-1">
+            </template>
+          </div>
+        </h2>
+        <div v-if="displaySpeechBubble && messages.length > 0">
+          <div class="speech-bubble">
+            {{ messages[messages.length-1].text }}  
+          </div>
         </div>
       </div>
     </div>
+
     <div class="chat-container">
-    <section class="uk-section">
-    <div class="uk-container uk-container-small">
-      <div class="uk-flex uk-flex-center">
-        <div class="uk-width-large uk-margin-large-top">
-          <template v-if="hasJoinedChat">
-            <!-- chats and chat form will be here -->
-            <div class="uk-panel uk-panel-scrollable">
-              <ul class="uk-list uk-list-divider">
-                <li v-for="message in messages" :key="message.id">
-                  <div
-                    :class="{ 'uk-text-right': message.user.id === user.username }"
+      <section class="uk-section">
+        <div class="uk-container uk-container-small">
+          <div class="uk-flex uk-flex-center">
+            <div class="uk-width-large uk-margin-large-top">
+              <template v-if="hasJoinedChat">
+                <div class="uk-panel uk-panel-scrollable">
+                  <ul class="uk-list uk-list-divider">
+                    <li v-for="message in messages" :key="message.id">
+                      <div
+                        :class="{ 'uk-text-right': message.user.id === user.username }"
+                      >
+                        {{ message.user.id }}: {{ message.text }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
 
+                <form @submit.prevent="sendMessage" method="post">
+                  <div class="uk-flex uk-margin-small-top">
+                    <div class="uk-width-expand">
+                      <input
+                        class="uk-input"
+                        type="text"
+                        v-model="newMessage"
+                        placeholder="Start chatting..."
+                      >
+                    </div>
+                    <div class="uk-width-auto">
+                      <button class="uk-button uk-button-primary">Send</button>
+                    </div>
+                  </div>
+                </form>
+              </template>
 
-                  >{{message.user.id}}:  {{ message.text }}</div>
-                </li>
-              </ul>
+              <template v-else>
+                <div id="containment">
+                <form @submit.prevent="joinChat" method="post" class="uk-form-stacked">
+                  <div class="uk-margin-small-top uk-width-1-1@s">
+                    <label class="uk-form-label">Enter Your Username</label>
+                    <div class="uk-form-controls">
+                      <input class="uk-input" type="text" v-model="username" required>
+                    </div>
+                  </div>
+                  <div class="uk-margin-top uk-width-1-1@s">
+                    <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-uppercase">Join Chat</button>
+                  </div>
+                </form>
+              </div>
+              </template>
             </div>
-
-            <form @submit.prevent="sendMessage" method="post">
-              <div class="uk-flex uk-margin-small-top">
-                <div class="uk-width-expand">
-                  <input
-                    class="uk-input"
-                    type="text"
-                    v-model="newMessage"
-                    placeholder="Start chatting..."
-                  >
-                </div>
-                <div class="uk-width-auto">
-                  <button class="uk-button uk-button-primary">Send</button>
-                </div>
-              </div>
-            </form>
-          </template>
-
-          <template v-else>
-            <h2 class="uk-text-center">Join Chat!</h2>
-            <form @submit.prevent="joinChat" method="post" class="uk-form-stacked">
-              <div class="uk-margin-small-top uk-width-1-1@s">
-                <label class="uk-form-label">username</label>
-                <div class="uk-form-controls">
-                  <input class="uk-input" type="text" v-model="username" required>
-                </div>
-              </div>
-              <div class="uk-margin-top uk-width-1-1@s">
-                <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded uk-text-uppercase">Join Chat</button>
-              </div>
-            </form>
-          </template>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
     </div>
   </div>
-  
 </template>
-
 
 <script>
 import axios from 'axios';
 import { StreamChat } from "stream-chat";
 
-
 export default {
   name: 'RoomList',
   data() {
     return {
-      room: [],
-      displaySpeechBubble: true,
+      rooms: [],
+      displaySpeechBubble: false,
       hasJoinedChat: false,
       token: '',
       username: "",
@@ -120,113 +108,99 @@ export default {
     };
   },
   methods: {
-    getRooms() {
-
-        const IDroom = this.$route.params.roomID;
-      axios.get('http://localhost:2000/getRoomDetails', {
-        params: {
-          roomID: IDroom
-        }
-      })
-      .then((response) => {
-        console.log(response.data);
-        this.room = response.data.rooms;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    async getRooms() {
+      const roomID = this.$route.params.roomID;
+      try {
+        const response = await axios.get('http://localhost:2000/getRoomDetails', {
+          params: { roomID }
+        });
+        this.rooms = response.data.rooms;
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     async joinChat() {
-       const response = await axios.get(`http://localhost:2000/join?username=${this.username}`);
-    const data = response.data;
-      this.username = "";
-      this.hasJoinedChat = true;
-      this.user = data.user;
-      this.token = data.token;
-     
-      await this.initializeStream();
-      await this.initializeChannel();
-
-      this.channel.on("message.new", event => {
-  this.messages.push({
-    text: event.message.text,
-    user: event.message.user
-  });
-});
+      try {
+        const response = await axios.get(`http://localhost:2000/join?username=${this.username}`);
+        const data = response.data;
+        this.username = "";
+        this.hasJoinedChat = true;
+        this.displaySpeechBubble = true;
+        this.user = data.user;
+        this.token = data.token;
+        await this.initializeStream();
+        await this.initializeChannel();
+        this.channel.on("message.new", event => {
+          this.messages.push({
+            text: event.message.text,
+            user: event.message.user
+          });
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
+
     async initializeStream() {
       const { username } = this.user;
-
       this.client = new StreamChat('aws64qwz4v5n');
-
       await this.client.setUser({ id: username, name: username }, this.token);
     },
+
     async initializeChannel() {
       this.channel = this.client.channel("messaging", "vue-chat", {
         name: "Vue Chat"
       });
-
       this.messages = (await this.channel.watch()).messages;
     },
-    async sendMessage() {
-      await this.channel.sendMessage({
-        text: this.newMessage
-      });
 
+    async sendMessage() {
+      await this.channel.sendMessage({ text: this.newMessage });
       this.newMessage = "";
     },
 
-     
     librarianOnClick() {
-       this.$router.push({ 
-        name: 'AITutor', 
-       
-      });
-    },
-    // Your other methods
-  
-
-   
+      this.$router.push({ name: 'AITutor' });
+    }
   },
   mounted() {
-    // Call getRooms() automatically when the component is mounted
     this.getRooms();
   }
 };
 </script>
 
 <style scoped>
-
-librarian-button {
+.librarian-button {
   position: absolute;
-  top: 20px; /* Adjust the top position as needed */
-  right: 20px; /* Adjust the right position as needed */
+  top: 20px;
+  right: 20px;
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
 
 .librarian-button img {
-  width: 40px; /* Adjust the width of the librarian icon */
-  height: auto; /* Maintain aspect ratio */
+  width: 100px;
+  height: auto;
 }
+
 .classroom {
-  background-image: url('https://static.vecteezy.com/system/resources/previews/000/568/517/original/vector-cartoon-illustration-of-school-classroom.jpg'); /* Set your classroom background image */
+  background-image: url('https://static.vecteezy.com/system/resources/previews/000/568/517/original/vector-cartoon-illustration-of-school-classroom.jpg');
   background-size: cover;
   background-position: center;
   width: 100%;
-  height: 100vh; /* Adjust the height as needed */
+  height: 100vh;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
 }
 
 .attendees {
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
 }
-
 
 .profile-icon {
   width: 50px;
@@ -236,25 +210,33 @@ librarian-button {
   cursor: pointer;
 }
 
+
 .speech-bubble {
   position: absolute;
-  background-color: #ffffff; /* Adjust bubble color */
+  background-color: #ffffff;
   border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 20px; /* Increased padding for larger size */
+  border-radius: 20px; /* Increased border radius for smoother corners */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  /* Additional styles for speech bubble */
+  width: 300px; /* Set a fixed width */
+  text-align: center; /* Center the text horizontally */
+  left: 50%; /* Center the speech bubble horizontally */ 
+  top: 40%;/* Center the speech bubble vertically */
+  transform: translate(-50%, -30%); /* Move the speech bubble to the center */
+  overflow: hidden; /* Prevent overflow */
+  text-overflow: ellipsis; /* Display ellipsis (...) when text overflows */
+  white-space: nowrap;
 }
-
 
 .chat-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-  background-color:white;
-  /* Adjust the size and styling of the chat container as needed */
+  margin-top: auto;
+  width: 100%;
 }
 
+div#containment{
+  background-color: #f5f5f5;
+  border-radius: 3%;
+  padding: 5%;
+}
 </style>
