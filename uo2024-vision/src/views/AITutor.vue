@@ -1,8 +1,10 @@
 <template>
-  <div class="hello">
-    <h1>Ask to AI Tutor</h1>
-    <input v-model="currentMessage" type="text">
-    <span><button @click="sendMessage(currentMessage)">Ask</button></span>
+  <div id="boxer" class="hello">
+    <h1 id="snail">🤖TUTORBOT🤖</h1>
+    <div class="input-container">
+      <input v-model="currentMessage" type="text" class="input">
+      <button @click="sendMessage(currentMessage)" class="button">Ask</button>
+    </div>
     <div class="messageBox">
       <template v-for="message in messages" :key="message.id">
         <div :class="{'messageFromUser': message.from === 'user', 'messageFromChatGpt': message.from !== 'user'}" v-html="message.data"></div>
@@ -10,8 +12,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script>
 import axios from 'axios';
@@ -26,63 +26,80 @@ export default {
   },
   methods: {
     async sendMessage(message){
-        this. messages. push ({
+        this.messages.push({
             from: 'user',
             data: message
         })
         await axios.post('http://localhost:2000/ask-to-chat-gpt', {message: message})
-        .then( (response) => {
-            this. messages. push (response. data)
-        })
-  
+        .then((response) => {
+            this.messages.push(response.data)
+        }) 
     }
-
   }
-   
-
 };
 </script>
 
 <style scoped>
-.input{
-    width:300px;
-    padding:10px;
+.input-container {
+  margin-left: 10%;
+  display: flex;
+  align-items: center;
 }
 
-.button{
-    height:40px;
-    background-color:powderblue;
-    padding:10px;
+.input {
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #EADFB4;
+  color:#51829B;
 }
 
-.messageBox{
-    height:500px;
-    background-color:gainsboro;
-    margin:0 20% 0 20%;
-    margin-top:20px;
-    padding: 5%
+.button {
+  height: 40px;
+  background-color: #F6995C;
+  width: 120px;
+  padding: 10px;
+  border-radius: 20%;
+  margin-right: 10%;
+  color: #51829B;
 }
 
-.messageFromUser{
-    text-align: right;
-    background-color:aliceblue;
-    border-radius: 10px;
-    padding:10px;
-    margin-top:15px;
-    width:30%;
-    margin-left:70%;
+.messageBox {
+  height: 500px;
+  background-color: #EADFB4;
+  margin: 0 10% 0 10%;
+  margin-top: 20px;
+  padding: 5%;
+  overflow-y: auto; /* Enable vertical scrolling */
+  border-radius: 5%;
 }
 
-.messageFromChatGpt{
-    text-align: left;
-    background-color:antiquewhite;
-    border-radius: 10px;
-    padding:10px;
-    margin-top:15px;
-    margin-bottom:15px;
-    width:30%;
-    margin-left:70%;
+.messageFromUser {
+  text-align: right;
+  background-color: #9BB0C1;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #F6995C;
 }
 
+.messageFromChatGpt {
+  text-align: left;
+  background-color: #51829B;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #EADFB4;
+}
+div#boxer{
+  background-color: #51829B;
+}
+
+h1#snail{
+  color:#F6995C;
+  font-weight: 800;
+}
 </style>
-
