@@ -1,10 +1,13 @@
-<template>
+<!-- <template>
   <div id="boxer" class="hello">
     <h1 id="snail">🤖TUTORBOT🤖</h1>
     <div class="input-container">
       <input v-model="currentMessage" type="text" class="input">
       <button @click="sendMessage(currentMessage)" class="button">Ask</button>
     </div>
+    
+    <input type="file" @change="sendFile" accept=".pdf">
+
     <div class="messageBox">
       <template v-for="message in messages" :key="message.id">
         <div :class="{'messageFromUser': message.from === 'user', 'messageFromChatGpt': message.from !== 'user'}" v-html="message.data"></div>
@@ -49,7 +52,7 @@ export default {
           url: 'https://api.pdfrest.com/extracted-text', 
           headers: { 
               'Api-Key': '44c98650-893f-40a9-a4cd-fe7c90a62b8a', 
-              ...data.getHeaders()
+              ...data
           },
           data : data 
       };
@@ -61,7 +64,81 @@ export default {
     }
   }
 };
+</script> -->
+
+<template>
+  <div id="boxer" class="hello">
+    <h1 id="snail">🤖TUTORBOT🤖</h1>
+    <div class="input-container">
+      <input v-model="currentMessage" type="text" class="input">
+      <button @click="sendMessage(currentMessage)" class="button">Ask</button>
+    </div>
+    
+    <input type="file" @change="sendFile" accept=".pdf">
+
+    <div class="messageBox">
+      <template v-for="message in messages" :key="message.id">
+        <div :class="{'messageFromUser': message.from === 'user', 'messageFromChatGpt': message.from !== 'user'}" v-html="message.data"></div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      currentMessage: '',
+      messages: [],
+    };
+  },
+  methods: {
+    sendMessage(message) {
+      // Your existing logic for sending messages
+      this.messages.push({ from: 'user', data: message, id: Date.now() });
+      // Call the OpenAI API or perform any other necessary actions
+    },
+    sendFile(event) {
+      const fileInput = event.target;
+      const file = fileInput.files[0];
+
+      if (file) {
+        const data = new FormData();
+        data.append("file", file);
+
+        const config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'https://api.pdfrest.com/extracted-text',
+          headers: {
+            'Api-Key': '44c98650-893f-40a9-a4cd-fe7c90a62b8a',
+            ...data.getHeaders(),
+          },
+          data: data,
+        };
+
+        this.messages.push({ from: 'user', data: `Uploading file: ${file.name}`, id: Date.now() });
+
+        axios(config)
+          .then((response) => {
+            const extractedText = response.data; // Assuming the response contains the extracted text
+            this.messages.push({ from: 'chatGpt', data: extractedText, id: Date.now() });
+          })
+          .catch((error) => {
+            console.error('Error:', error.message);
+            this.messages.push({ from: 'chatGpt', data: 'Error extracting text', id: Date.now() });
+          });
+      }
+    },
+  },
+};
 </script>
+
+<style scoped>
+/* Add your styles here */
+</style>
+
 
 <style scoped>
 .input-container {
