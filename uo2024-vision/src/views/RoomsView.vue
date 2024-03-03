@@ -108,12 +108,13 @@ h3 {
 }
 
 .isRoom2{
-  height: 100vh;  
+  height: 100vh;
   background-image: url('../assets/desks.jpg');
   background-size: cover; /* Apply tint */  
   background-position: center;
   h3{
     background-image: url('../assets/exambook.png');
+    padding-top: 5%;
   }
 }
 
@@ -160,6 +161,71 @@ h3 {
     background-position: center;
     border-radius: 30%;
     background-size: cover;
+  }
+}  
+
+
+.isRoom6{
+  height: 100vh;  
+  background-image: url('../assets/history.jpg');
+  background-size: cover; /* Apply tint */
+  background-position: center;
+  h3{
+    background-size: contain;
+    background-image: url('../assets/canada.png');
+  }
+}
+
+.isRoom7{
+  height: 100vh;  
+  background-image: url('../assets/english1.jpg');
+  background-size: cover; /* Apply tint */  
+  background-position: center;
+  h3{
+    background-size: contain;
+    background-image: url('../assets/page.png');
+  }
+}
+
+.isRoom8{
+  height: 100vh;  
+  background-image: url('../assets/think.jpg');
+  background-size: cover; /* Apply tint */  
+  background-position: center;
+  h3{
+    background-image: url('../assets/brain.png');
+    background-position: center;
+    background-size: cover;
+    width: 190px;
+  }
+}
+
+.isRoom9{
+  height: 100vh;  
+  background-image: url('../assets/music.jpg');
+  background-size: cover; /* Apply tint */  
+  background-position: center;
+  
+  h3{
+    background-image: url('../assets/palette.png');
+    background-position: center;
+    height: 200px;
+    border-radius: 5%;
+    background-size: contain;
+  }
+}  
+
+.isRoom10{
+  height: 100vh;  
+  background-image: url('../assets/chemistry.jpg');
+  background-size: cover; /* Apply tint */  
+  background-position: center;
+  
+  h3{
+    background-image: url('../assets/helium.png');
+    background-position: center;
+    background-size: contain;
+    border-radius: 10%;
   }
 }  
 .isFart{

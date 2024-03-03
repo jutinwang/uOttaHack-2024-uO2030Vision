@@ -75,7 +75,7 @@ export default {
        const response = await axios.get(`http://localhost:2000/join?username=${this.username}`);
     const data = response.data;
       this.username = "";
-      this.hasJoinedChat = true;  
+      this.hasJoinedChat = true;
       this.user = data.user;
       this.token = data.token;
      

@@ -45,7 +45,9 @@ app.use(bodyParser.json())
 const db = mysql.createConnection({
   host: "34.130.167.29",
   user: "root",
+
   database: "hackathon_schema"
+
 });
 
 db.connect((err) => {
@@ -101,7 +103,9 @@ app.get('/getRoomTypes', (req, res) => {
 app.get('/getRooms', (req, res) => {
   // Retrieve username and password from the request body
   const { typeID } = req.query;
+
   const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendants FROM Room a LEFT JOIN RoomAttendant at ON a.ID = at.roomID LEFT JOIN User b ON at.username = b.username WHERE a.typeID = ? GROUP BY a.ID";
+
 
   db.query(sql, [typeID], (err, results) => {
     if (err) {
@@ -203,7 +207,9 @@ app.listen(2000, () => {
 app.get('/getRoomDetails', (req, res) => {
   // Retrieve username and password from the request body
   const { roomID } = req.query;
+
   const sql = "SELECT a.ID, JSON_ARRAYAGG(JSON_OBJECT('username', at.username, 'name', b.name, 'profilePic', b.profilePic)) AS attendents FROM Room a LEFT JOIN RoomAttendant at ON a.ID = at.roomID LEFT JOIN User b ON at.username = b.username WHERE a.ID = ? GROUP BY a.ID";
+
 
   db.query(sql, [roomID], (err, results) => {
     if (err) {

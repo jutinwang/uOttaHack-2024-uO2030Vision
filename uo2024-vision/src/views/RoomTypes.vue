@@ -75,36 +75,59 @@ export default {
 
 <style>
 /* General styles */
-h1#togather {
-  color: #6c0e23;
-  text-shadow: -1px -1px 0 #7C93C3, 1px -1px 0 #7C93C3, -1px 1px 0 #7C93C3, 1px 1px 0 #7C93C3; /* Outline using shadows */
-  font-size: 36px;
-  margin: 0;
-}
-
 header#roomTypeHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #A25772;
+  background: linear-gradient(to right, #ff8a00, #da1b60); /* Gradient background */
   height: 100px;
-  padding: 0 20px; /* Adjust padding */
-  box-sizing: border-box; /* Ensure padding is included in width */
+  padding: 0 20px;
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow */
+}
+
+header#roomTypeHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px; /* Match header border radius */
+  background: linear-gradient(to right, #ff8a00, #da1b60); /* Same gradient as header */
+  z-index: -1;
+  filter: blur(20px); /* Blur effect */
 }
 
 img[alt="logo"] {
-  height: 100%;
+  height: 75px;
+}
+
+h1#togather {
+  color: #fff;
+  font-size: 36px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow */
 }
 
 button#signOutBtn {
   height: 50px;
   width: 100px;
   border-radius: 25px;
-  background-color: #6c0e23;
-  color: #9fbee8;
+  background: linear-gradient(to right, #da1b60, #ff8a00); /* Gradient background */
+  color: #fff;
   border: none;
   font-size: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow */
 }
+
+/* Other styles remain unchanged */
+
+
+/* Other styles remain unchanged */
+
 
 body#roomTypeBody {
   margin: 0;
@@ -239,7 +262,7 @@ body#roomTypeBody {
 
 .room-type-6 h3 {
   position: relative;
-  background-image: url('../assets/history.jpg');
+  background-image: url('../assets/history1.jpg');
   background-size: cover;
   background-color: #9EB8D9; /* Fallback color */ 
 }

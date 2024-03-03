@@ -40,7 +40,7 @@ const askToChatGpt = async function (req, res) {
 const _createOpenAIInstance = async () => {
     
 
-    return new OpenAI({apiKey:'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'});
+    return new OpenAI({apiKey:'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'});
 }
 
 
