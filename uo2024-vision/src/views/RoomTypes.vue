@@ -39,10 +39,10 @@ export default {
     return {
       roomTypes: [
         { id: 1, name: 'LIBRARY', style: { color: '#ffc09f', textAlign: 'center' } },
-        { id: 2, name: 'Exams' },
+        { id: 2, name: 'Exams', style: {color: '#a0ced9', textAlign: 'center'} },
         { id: 3, name: 'Computer Science', style: {color: '#ffee93', textAlign: 'center'} },
-        { id: 4, name: 'Engineering' },
-        { id: 5, name: 'Biology' },
+        { id: 4, name: 'Engineering', style: {color: '#fcf5c7', textAlign: 'center'}},
+        { id: 5, name: 'Biology', style: {color: '#adf7b6', textAlign: 'center'} },
         { id: 6, name: 'History' },
         { id: 7, name: 'English' },
         { id: 8, name: 'Phsychology' },
@@ -101,7 +101,7 @@ button#signOutBtn {
   width: 100px;
   border-radius: 25px;
   background-color: #6c0e23;
-  color: white;
+  color: #9fbee8;
   border: none;
   font-size: 16px;
 }
@@ -110,7 +110,7 @@ body#roomTypeBody {
   margin: 0;
   padding-top: 3%;
   height: 100vh;
-  background-color: #EEF5FF;
+  background-color: #9fbee8;
   padding-left: 2%;
   padding-right: 2%;
 }
@@ -176,6 +176,67 @@ body#roomTypeBody {
   box-sizing: border-box; /* Ensure border width is included in width/height */
   border-radius: 4%;
 }
+
+.room-type-2 h3 {
+  position: relative;
+  background-image: url('../assets/exams.png');
+  background-size: cover;
+  background-color: #6390d9; /* Fallback color */
+  background-blend-mode: multiply; /* Apply tint */
+}
+
+.room-type-2 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #a0ced9; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-4 h3 {
+  position: relative;
+  background-image: url('../assets/rocket.jpg');
+  background-size: cover; /* Apply tint */
+  background-position: center;
+}
+
+.room-type-4 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #fcf5c7; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
+.room-type-5 h3 {
+  position: relative;
+  background-image: url('../assets/plants.png');
+  background-size: cover; /* Apply tint */
+  background-position: center;
+  background-color: #48d477; /* Fallback color */
+  background-blend-mode: multiply; /* Apply tint */
+}
+
+.room-type-5 h3::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position the border relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container horizontally */
+  height: 100%; /* Cover the entire container vertically */
+  border: 5px solid #adf7b6; /* Border properties */
+  box-sizing: border-box; /* Ensure border width is included in width/height */
+  border-radius: 4%;
+}
+
 
 
 /* Define styles for other room types similarly */
