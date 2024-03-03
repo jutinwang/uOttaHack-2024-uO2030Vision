@@ -23,6 +23,15 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/RoomTypes.vue'),
     meta: {requiresAuth: true}
   },
+  {
+  path: '/Account:username',
+  name: 'Account',
+  // route level code-splitting
+  // this generates a separate chunk (about.[hash].js) for this route
+  // which is lazy-loaded when the route is visited.
+  component: () => import(/* webpackChunkName: "about" */ '../views/AccountView.vue'),
+  meta: {requiresAuth: true}
+  },
 
   {
     path: '/roomDetails:roomID',
